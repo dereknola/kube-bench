@@ -16,33 +16,43 @@ master:
   scheduler:
     bins:
       - containerd
+    kubeconfig:
+      - /var/lib/rancher/k3s/server/cred/scheduler.kubeconfig
 
   controllermanager:
     bins:
       - containerd
+    kubeconfig:
+      - /var/lib/rancher/k3s/server/cred/controller.kubeconfig
+
 
   etcd:
     bins:
       - containerd
-    datadirs:
-      - /var/lib/rancher/k3s/server/db/etcd
 
-  node:
-    components:
-      - kubelet
-      - proxy
+etcd:
+  components:
+    - etcd
+  
+  etcd:
+    confs: /var/lib/rancher/k3s/server/db/etcd/config
 
-    kubelet:
-      bins:
-        - containerd
-      defaultkubeconfig: /var/lib/rancher/k3s/agent/kubelet.kubeconfig
-      defaultcafile: /var/lib/rancher/k3s/agent/client-ca.crt
+node:
+  components:
+    - kubelet
+    - proxy
 
-    proxy:
-      bins:
-        - containerd
-      defaultkubeconfig: /var/lib/rancher/k3s/agent/kubeproxy.kubeconfig
+  kubelet:
+    bins:
+      - containerd
+    defaultkubeconfig: /var/lib/rancher/k3s/agent/kubelet.kubeconfig
+    defaultcafile: /var/lib/rancher/k3s/agent/client-ca.crt
 
-  policies:
-    components:
-      - policies
+  proxy:
+    bins:
+      - containerd
+    defaultkubeconfig: /var/lib/rancher/k3s/agent/kubeproxy.kubeconfig
+
+policies:
+  components:
+    - policies
